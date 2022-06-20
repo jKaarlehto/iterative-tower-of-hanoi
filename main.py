@@ -1,7 +1,3 @@
-#base case: sum(stack3) == (discs/2)*(1+discs)
-#algorithm:
-#start from rightmost stack.
-
 #1. step to next stack with discs
 #2. pick up a disc 
 #3. step to next stack
@@ -13,6 +9,7 @@
 #       else -> go to step 1.
 #even number of discs: step = positive
 #odd number of discs: step = negative
+
 from collections import deque
 import math
 import os
