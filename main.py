@@ -80,9 +80,9 @@ class disc_tower:
                     disc_symbol = ""
 
                 space_symbols = math.floor((stack_width - disc_symbols)/2)
-                print(space_symbols*symbol_width*" ",end="") 
+                print(space_symbols*symbol_width*"`",end="") 
                 print(disc_symbols*symbol_width*disc_symbol,end="")
-                print(space_symbols*symbol_width*" ",end="")
+                print(space_symbols*symbol_width*"`",end="")
 
             current_render_line += 1
             print("\n")
