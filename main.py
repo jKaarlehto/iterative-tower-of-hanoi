@@ -83,18 +83,16 @@ class disc_tower:
                     disc_symbol = ""
 
                 space_symbols = math.floor((stack_width - disc_symbols)/2)
-                print(space_symbols*symbol_width*"`",end="") 
-                print(disc_symbols*symbol_width*disc_symbol,end="")
-                print(space_symbols*symbol_width*"`",end="")
+                print(space_symbols*symbol_width*"`"+disc_symbols*symbol_width*disc_symbol+space_symbols*symbol_width*"`", end="") 
 
             current_render_line += 1
             print("\n")
 
     @staticmethod
-    def solve(disc_tower, render:bool, speed=wait):
+    def solve(disc_tower, render:bool):
 
         disc_tower.print_state()
-        wait = speed 
+        wait = 0.5 
         print("Step interval: {:.3f} seconds".format(wait))
         time.sleep(2)
         start_time = time.time()
@@ -134,9 +132,7 @@ class disc_tower:
         print("TIME ELAPSED: %.3f seconds." % (time.time()-start_time))
         time.sleep(2)
         cls()
-
-speed = 0.001 
-discs = 14 
+discs = 5
 game = disc_tower(discs)
 
 while True:
