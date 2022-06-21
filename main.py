@@ -19,7 +19,6 @@ def cls():
 
 class disc_tower:
     steps = int()
-    required_steps = int()
     state = list()
     discs = int()
     direction = int() 
@@ -33,6 +32,7 @@ class disc_tower:
         self.inspect_index = 0
         self.steps = 0
         self.required_steps = (2**discs)-1
+        self.render_time = 0
 
 
 
@@ -55,13 +55,14 @@ class disc_tower:
     def place_disk(self):
         self.steps = self.steps + 1 
         self.state[self.inspect_index].appendleft(self.moving_disk_value)
-        self.print_state()
 
     def is_solved(self):
         return (sum(self.state[-1]) == (self.discs/2)*(1+self.discs))
     
     def print_state(self):
+        
         cls() 
+        print("Solving with {} discs".format(self.discs))
         symbol_width = 2 
                  
         stack_width = self.discs*symbol_width
@@ -74,7 +75,7 @@ class disc_tower:
 
                 if (stack_visible):
                     disc_symbols = stack[stack_render_index]*symbol_width
-                    disc_symbol = "X" 
+                    disc_symbol = "O" 
                 else:
                     disc_symbols = 0 
                     disc_symbol = ""
@@ -88,9 +89,22 @@ class disc_tower:
             print("\n")
 
     @staticmethod
-    def solve(disc_tower, speed):
+    def solve(disc_tower, render:bool):
+
+        disc_tower.print_state()
+        wait = 1/(2**disc_tower.discs-1)*disc_tower.discs
+        print("Step interval: {:.3f} seconds".format(wait))
+        start_time = time.time()
+        
+        skip_frame = False
         while not disc_tower.is_solved():
-            time.sleep(1/speed)
+
+            if render and not skip_frame: 
+                time.sleep(wait)
+                disc_tower.print_state() 
+            else: 
+                skip_frame = False
+
             disc_tower.step_non_empty()
             disc_tower.pick_up_disk()
             disc_tower.step()
@@ -107,12 +121,19 @@ class disc_tower:
                 disc_tower.step() 
                 disc_tower.place_disk()
                 disc_tower.steps = disc_tower.steps -1
+                skip_frame = True
                 continue 
+
+        time.sleep(wait)
         disc_tower.print_state()
         print(" COMPLETED")
         print("TOTAL STEPS: ", disc_tower.steps)
+        print("TIME ELAPSED: %.3f seconds." % (time.time()-start_time))
+        time.sleep(2)
+        cls()
 
-size = int(input("Enter tower height: "))
-game = disc_tower(size)
-speed = int(input("Enter solving speed: "))
-disc_tower.solve(game,speed)
+game = disc_tower(5)
+while True:
+    disc_tower.solve(game,True)
+    disc_tower.__init__(game,5)
+    
