@@ -24,6 +24,7 @@ class disc_tower:
     direction = int() 
     inspect_index = int()
     moving_disk_value = int()
+    wait = float()
 
     def __init__(self,discs:int):
         self.state = [deque([i for i in (range(1,discs+1))]),deque([]),deque([])]
@@ -33,6 +34,7 @@ class disc_tower:
         self.steps = 0
         self.required_steps = (2**discs)-1
         self.render_time = 0
+        self.wait = 1/(2**self.discs-1)*self.discs
 
 
 
@@ -89,11 +91,12 @@ class disc_tower:
             print("\n")
 
     @staticmethod
-    def solve(disc_tower, render:bool):
+    def solve(disc_tower, render:bool, speed=wait):
 
         disc_tower.print_state()
-        wait = 1/(2**disc_tower.discs-1)*disc_tower.discs
+        wait = speed 
         print("Step interval: {:.3f} seconds".format(wait))
+        time.sleep(2)
         start_time = time.time()
         
         skip_frame = False
@@ -126,14 +129,16 @@ class disc_tower:
 
         time.sleep(wait)
         disc_tower.print_state()
-        print(" COMPLETED")
-        print("TOTAL STEPS: ", disc_tower.steps)
+        print("   COMPLETED")
+        print(" TOTAL STEPS: ", disc_tower.steps)
         print("TIME ELAPSED: %.3f seconds." % (time.time()-start_time))
         time.sleep(2)
         cls()
 
-game = disc_tower(5)
+speed = 0.001 
+discs = 14 
+game = disc_tower(discs)
+
 while True:
     disc_tower.solve(game,True)
-    disc_tower.__init__(game,5)
-    
+    disc_tower.__init__(game,discs)
